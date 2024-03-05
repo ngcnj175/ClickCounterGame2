@@ -12,9 +12,9 @@ document.getElementById('click-me').addEventListener('click', function() {
 
 function showStars() {
     const stars = document.getElementById('stars');
-    stars.style.display = 'block';
-    // 星のアニメーションが終了した後、非表示にする
+    stars.style.display = 'block'; // Show the stars
+    // Hide the stars after animation completes
     setTimeout(() => {
         stars.style.display = 'none';
-    }, 500); // アニメーションの持続時間と一致させる
+    }, 500); // The duration should match the animation
 }
