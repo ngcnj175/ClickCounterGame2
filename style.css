@@ -9,7 +9,6 @@ button {
     margin-top: 20px;
 }
 
-/* 新しく追加するスタイル */
 @keyframes starAnimation {
   from {
     transform: scale(0.5);
@@ -28,5 +27,6 @@ button {
   transform: translate(-50%, -50%);
   font-size: 2rem;
   color: gold;
+  display: none; /* Initially hidden */
   animation: starAnimation 0.5s ease-out;
 }
