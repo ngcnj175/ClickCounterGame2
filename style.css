@@ -8,3 +8,25 @@ button {
     font-size: 20px;
     margin-top: 20px;
 }
+
+/* 新しく追加するスタイル */
+@keyframes starAnimation {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1.5);
+    opacity: 1;
+  }
+}
+
+#stars {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  color: gold;
+  animation: starAnimation 0.5s ease-out;
+}
