@@ -1,17 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>Click Counter Game</title>
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>シンプルなテトリス</title>
+<style>
+  body { font-family: Arial; display: flex; justify-content: center; height: 100vh; align-items: center; margin: 0; }
+  .game-container { position: relative; }
+  canvas { border: 1px solid #000; }
+  .controls { position: absolute; bottom: 10px; width: 100%; display: flex; justify-content: center; }
+  button { padding: 10px; margin: 0 5px; }
+</style>
 </head>
 <body>
-    <h1>Click Counter Game</h1>
-    <p>Clicks: <span id="click-count">0</span></p>
-    <button id="click-me">Click Me!</button>
-    <div id="stars" style="display: none;">
-      ★★★★★
-    </div>
-    <script src="script.js"></script>
+<div class="game-container">
+  <canvas id="gameCanvas" width="300" height="600"></canvas>
+  <div class="controls">
+    <button id="leftButton">左</button>
+    <button id="rightButton">右</button>
+    <button id="rotateButton">回転</button>
+    <button id="dropButton">落下</button>
+  </div>
+</div>
+
+<script>
+// ここにJavaScriptのコードを書きます
+</script>
 </body>
 </html>
