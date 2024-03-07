@@ -1,20 +1,65 @@
-let count = 0;
+// JavaScriptのテトリスロジック
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const rows = 20;
+const cols = 10;
+const blockSize = 30;
+const board = [];
+let currentPiece = null;
 
-document.getElementById('click-me').addEventListener('click', function() {
-    count++;
-    document.getElementById('click-count').textContent = count;
-    
-    // 10の倍数であれば星を表示
-    if (count % 10 === 0) {
-        showStars();
+// ボードの初期化
+function initBoard() {
+  for (let r = 0; r < rows; r++) {
+    board[r] = [];
+    for (let c = 0; c < cols; c++) {
+      board[r][c] = '';
     }
-});
-
-function showStars() {
-    const stars = document.getElementById('stars');
-    stars.style.display = 'block'; // Show the stars
-    // Hide the stars after animation completes
-    setTimeout(() => {
-        stars.style.display = 'none';
-    }, 500); // The duration should match the animation
+  }
 }
+
+// ピースの描画
+function drawPiece(piece) {
+  piece.shape.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value) {
+        ctx.fillStyle = piece.color;
+        ctx.fillRect((piece.x + x) * blockSize, (piece.y + y) * blockSize, blockSize, blockSize);
+        ctx.strokeRect((piece.x + x) * blockSize, (piece.y + y) * blockSize, blockSize, blockSize);
+      }
+    });
+  });
+}
+
+// ピースの生成
+function createPiece() {
+  const shapes = [
+    // テトリスの形状を定義
+  ];
+  const colors = [
+    // 色を定義
+  ];
+  const id = Math.floor(Math.random() * shapes.length);
+  return {
+    shape: shapes[id],
+    color: colors[id],
+    x: Math.floor(cols / 2) - 1,
+    y: 0
+  };
+}
+
+// ピースの動きと衝突判定のロジックをここに追加
+
+// ゲームの開始
+function startGame() {
+  initBoard();
+  currentPiece = createPiece();
+  drawPiece(currentPiece);
+}
+
+// ゲームの更新
+function updateGame() {
+  // ゲームの更新ロジックをここに追加
+}
+
+// ゲームの開始
+startGame();
