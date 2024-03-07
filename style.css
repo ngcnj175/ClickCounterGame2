@@ -1,32 +1,10 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+/* CSSの追加スタイル */
+.game-row {
+  display: flex;
 }
-
-button {
-    padding: 10px;
-    font-size: 20px;
-    margin-top: 20px;
-}
-
-@keyframes starAnimation {
-  from {
-    transform: scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1.5);
-    opacity: 1;
-  }
-}
-
-#stars {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 2rem;
-  color: gold;
-  display: none; /* Initially hidden */
-  animation: starAnimation 0.5s ease-out;
+.game-cell {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
 }
