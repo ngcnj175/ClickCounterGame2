@@ -1,65 +1,113 @@
-// JavaScriptのテトリスロジック
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const rows = 20;
-const cols = 10;
-const blockSize = 30;
-const board = [];
-let currentPiece = null;
+// ゲームの状態
+const gameBoard = Array.from({ length: 20 }, () => Array(10).fill(0));
+const shapes = [
+  // I, J, L, O, S, T, Z テトリミノ
+];
+const colors = [
+  // テトリミノの色
+];
+let interval;
+let currentPiece;
+let nextPiece = createPiece();
+let score = 0;
+let isGameOver = false;
 
-// ボードの初期化
-function initBoard() {
-  for (let r = 0; r < rows; r++) {
-    board[r] = [];
-    for (let c = 0; c < cols; c++) {
-      board[r][c] = '';
-    }
-  }
+// ピースの生成
+function createPiece() {
+  const typeId = Math.floor(Math.random() * shapes.length);
+  return {
+    x: 3, // 初期位置
+    y: 0,
+    shape: shapes[typeId],
+    color: colors[typeId]
+  };
 }
 
 // ピースの描画
-function drawPiece(piece) {
-  piece.shape.forEach((row, y) => {
+function draw() {
+  // キャンバスをクリア
+  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+  // ゲームボードの描画
+  drawBoard();
+  // ピースの描画
+  drawPiece(currentPiece);
+}
+
+// ボードの描画
+function drawBoard() {
+  gameBoard.forEach((row, y) => {
     row.forEach((value, x) => {
-      if (value) {
-        ctx.fillStyle = piece.color;
-        ctx.fillRect((piece.x + x) * blockSize, (piece.y + y) * blockSize, blockSize, blockSize);
-        ctx.strokeRect((piece.x + x) * blockSize, (piece.y + y) * blockSize, blockSize, blockSize);
+      if (value !== 0) {
+        ctx.fillStyle = colors[value];
+        ctx.fillRect(x * 30, y * 30, 30, 30);
+        ctx.strokeRect(x * 30, y * 30, 30, 30);
       }
     });
   });
 }
 
-// ピースの生成
-function createPiece() {
-  const shapes = [
-    // テトリスの形状を定義
-  ];
-  const colors = [
-    // 色を定義
-  ];
-  const id = Math.floor(Math.random() * shapes.length);
-  return {
-    shape: shapes[id],
-    color: colors[id],
-    x: Math.floor(cols / 2) - 1,
-    y: 0
-  };
+// ピースの動き
+function movePiece(x, y) {
+  // 衝突判定
+  if (!collides(currentPiece, x, y, currentPiece.shape)) {
+    currentPiece.x += x;
+    currentPiece.y += y;
+  }
 }
 
-// ピースの動きと衝突判定のロジックをここに追加
+// ピースの回転
+function rotatePiece() {
+  // 回転ロジック
+}
+
+// 衝突判定
+function collides(piece, x, y, shape) {
+  // 衝突判定ロジック
+}
+
+// ラインの消去
+function clearLines() {
+  // ライン消去ロジック
+}
+
+// ゲームオーバーの判定
+function checkGameOver() {
+  // ゲームオーバーロジック
+}
 
 // ゲームの開始
 function startGame() {
-  initBoard();
-  currentPiece = createPiece();
-  drawPiece(currentPiece);
+  if (!isGameOver) {
+    interval = setInterval(update, 1000);
+  }
 }
 
 // ゲームの更新
-function updateGame() {
-  // ゲームの更新ロジックをここに追加
+function update() {
+  if (!collides(currentPiece, 0, 1, currentPiece.shape)) {
+    currentPiece.y++;
+  } else {
+    // ピースをボードに固定
+    fixPiece();
+    // ラインの消去
+    clearLines();
+    // 新しいピースの生成
+    currentPiece = nextPiece;
+    nextPiece = createPiece();
+    // ゲームオーバーの判定
+    checkGameOver();
+  }
+  draw();
 }
 
-// ゲームの開始
+// イベントリスナーの設定
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft') movePiece(-1, 0);
+  if (e.key === 'ArrowRight') movePiece(1, 0);
+  if (e.key === 'ArrowDown') movePiece(0, 1);
+  if (e.key === 'ArrowUp') rotatePiece();
+});
+
+// ゲームの初期化と開始
+init();
 startGame();
