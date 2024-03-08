@@ -1,10 +1,4 @@
 /* CSSの追加スタイル */
-.game-row {
-  display: flex;
-}
-.game-cell {
-  width: 30px;
-  height: 30px;
-  border: 1px solid #ddd;
-  box-sizing: border-box;
+#gameContainer {
+  position: relative;
 }
