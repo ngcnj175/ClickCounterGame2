@@ -3,6 +3,7 @@ body, html {
   padding: 0;
   overflow: hidden; /* スクロールを無効化 */
   height: 100%;
+  user-select: none; /* ボタン選択時のテキスト選択を防ぐ */
 }
 
 #gameArea {
@@ -23,7 +24,7 @@ body, html {
 }
 
 .enemy {
-  bottom: 100px;
+  bottom: 10px;
 }
 
 #controls {
