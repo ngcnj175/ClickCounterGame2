@@ -83,4 +83,50 @@ function updateGame() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBoard();
   drawPiece();
-  currentPiece.y += 1; // ピースを1つ下に移
+  currentPiece.y += 1; // ピースを1つ下に移動
+
+  // ピースが底に達したか、他のピースに衝突した場合の処理
+  if (currentPiece.y + currentPiece.shape.length === rows || collisionDetected()) {
+    currentPiece.y -= 1; // ピースを1つ上に戻す
+    fixPiece(); // ピースをボードに固定する
+    currentPiece = createPiece(); // 新しいピースを生成する
+  }
+
+  requestAnimationFrame(updateGame); // 次のフレームでゲームを更新する
+}
+
+// 衝突検出
+function collisionDetected() {
+  for (let y = 0; y < currentPiece.shape.length; y++) {
+    for (let x = 0; x < currentPiece.shape[y].length; x++) {
+      if (currentPiece.shape[y][x] &&
+          (board[y + currentPiece.y] &&
+          board[y + currentPiece.y][x + currentPiece.x]) !== 0) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// ピースをボードに固定する
+function fixPiece() {
+  for (let y = 0; y < currentPiece.shape.length; y++) {
+    for (let x = 0; x < currentPiece.shape[y].length; x++) {
+      if (currentPiece.shape[y][x]) {
+        board[y + currentPiece.y][x + currentPiece.x] = shapes.indexOf(currentPiece.shape) + 1;
+      }
+    }
+  }
+}
+
+// ゲームの初期化
+function init() {
+  currentPiece = createPiece();
+  updateGame();
+}
+
+init(); // ゲームを開始する
+</script>
+</body>
+</html>
