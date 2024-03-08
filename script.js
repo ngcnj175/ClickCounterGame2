@@ -1,10 +1,18 @@
-// ゲームの状態
+// ゲームの状態を表す変数
 const gameBoard = Array.from({ length: 20 }, () => Array(10).fill(0));
 const shapes = [
-  // I, J, L, O, S, T, Z テトリミノ
+  // 各テトリミノの形状を2次元配列で定義
+  [
+    [1, 1, 1, 1], // I
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
+  ],
+  // J, L, O, S, T, Zの形状も同様に定義
 ];
 const colors = [
-  // テトリミノの色
+  // テトリミノの色を定義
+  'cyan', 'blue', 'orange', 'yellow', 'green', 'purple', 'red'
 ];
 let interval;
 let currentPiece;
@@ -24,21 +32,26 @@ function createPiece() {
 }
 
 // ピースの描画
-function draw() {
-  // キャンバスをクリア
-  ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-  // ゲームボードの描画
-  drawBoard();
-  // ピースの描画
-  drawPiece(currentPiece);
+function drawPiece(piece) {
+  // ピースの各ブロックを描画
+  piece.shape.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value !== 0) {
+        ctx.fillStyle = piece.color;
+        ctx.fillRect((piece.x + x) * 30, (piece.y + y) * 30, 30, 30);
+        ctx.strokeRect((piece.x + x) * 30, (piece.y + y) * 30, 30, 30);
+      }
+    });
+  });
 }
 
-// ボードの描画
+// ゲームボードの描画
 function drawBoard() {
+  // ゲームボード上の既存のピースを描画
   gameBoard.forEach((row, y) => {
     row.forEach((value, x) => {
       if (value !== 0) {
-        ctx.fillStyle = colors[value];
+        ctx.fillStyle = colors[value - 1]; // 色のインデックスに注意
         ctx.fillRect(x * 30, y * 30, 30, 30);
         ctx.strokeRect(x * 30, y * 30, 30, 30);
       }
@@ -46,44 +59,9 @@ function drawBoard() {
   });
 }
 
-// ピースの動き
-function movePiece(x, y) {
-  // 衝突判定
-  if (!collides(currentPiece, x, y, currentPiece.shape)) {
-    currentPiece.x += x;
-    currentPiece.y += y;
-  }
-}
-
-// ピースの回転
-function rotatePiece() {
-  // 回転ロジック
-}
-
-// 衝突判定
-function collides(piece, x, y, shape) {
-  // 衝突判定ロジック
-}
-
-// ラインの消去
-function clearLines() {
-  // ライン消去ロジック
-}
-
-// ゲームオーバーの判定
-function checkGameOver() {
-  // ゲームオーバーロジック
-}
-
-// ゲームの開始
-function startGame() {
-  if (!isGameOver) {
-    interval = setInterval(update, 1000);
-  }
-}
-
 // ゲームの更新
 function update() {
+  // ピースを1つ下に移動
   if (!collides(currentPiece, 0, 1, currentPiece.shape)) {
     currentPiece.y++;
   } else {
@@ -98,6 +76,15 @@ function update() {
     checkGameOver();
   }
   draw();
+}
+
+// ゲームの開始
+function startGame() {
+  if (!isGameOver) {
+    interval = setInterval(update, 1000);
+    currentPiece = nextPiece;
+    nextPiece = createPiece();
+  }
 }
 
 // イベントリスナーの設定
