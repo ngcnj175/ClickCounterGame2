@@ -1,60 +1,17 @@
-// JavaScriptのテトリスロジック
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const rows = 20;
-const cols = 10;
-const blockSize = 30;
-const board = [];
+const player = document.getElementById('player');
+const gameArea = document.getElementById('gameArea');
+let playerPosition = { x: window.innerWidth / 2, y: 20 };
 
-// ボードの初期化
-function initBoard() {
-  for (let r = 0; r < rows; r++) {
-    board[r] = [];
-    for (let c = 0; c < cols; c++) {
-      board[r][c] = 0;
-    }
-  }
+document.getElementById('left').addEventListener('click', function() { movePlayer(-10, 0); });
+document.getElementById('right').addEventListener('click', function() { movePlayer(10, 0); });
+document.getElementById('up').addEventListener('click', function() { movePlayer(0, -10); });
+document.getElementById('down').addEventListener('click', function() { movePlayer(0, 10); });
+
+function movePlayer(x, y) {
+  playerPosition.x += x;
+  playerPosition.y += y;
+  player.style.left = playerPosition.x + 'px';
+  player.style.bottom = playerPosition.y + 'px';
 }
 
-// ピースの描画
-function drawPiece(piece) {
-  ctx.fillStyle = piece.color;
-  piece.shape.forEach((row, y) => {
-    row.forEach((value, x) => {
-      if (value) {
-        ctx.fillRect((piece.x + x) * blockSize, (piece.y + y) * blockSize, blockSize, blockSize);
-      }
-    });
-  });
-}
-
-// ピースの生成
-function createPiece() {
-  const shapes = [
-    // テトリスの形状を定義
-  ];
-  const colors = [
-    // 色を定義
-  ];
-  const id = Math.floor(Math.random() * shapes.length);
-  return {
-    shape: shapes[id],
-    color: colors[id],
-    x: Math.floor(cols / 2) - 1,
-    y: 0
-  };
-}
-
-// ゲームの開始
-function startGame() {
-  initBoard();
-  // ピースの生成と描画
-  const piece = createPiece();
-  drawPiece(piece);
-}
-
-// ゲームの開始
-startGame();
-</script>
-</body>
-</html>
+// このコードは基本的な動きのみをサポートしています。実際のゲームでは、敵の動き、衝突検出、スコア追跡などの機能を追加する必要があります。
