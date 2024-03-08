@@ -3,130 +3,22 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>シンプルなテトリス</title>
-<style>
-  body { font-family: Arial; display: flex; justify-content: center; height: 100vh; align-items: center; margin: 0; }
-  #gameCanvas { border: 1px solid #000; }
-  .controls { position: absolute; bottom: 10px; width: 100%; display: flex; justify-content: center; }
-  button { padding: 10px; margin: 0 5px; }
-</style>
+<title>GYUFO</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="gameContainer">
-  <canvas id="gameCanvas" width="300" height="600"></canvas>
-  <div class="controls">
-    <button id="leftButton">左</button>
-    <button id="rightButton">右</button>
-    <button id="rotateButton">回転</button>
-    <button id="dropButton">落下</button>
-  </div>
+<div id="gameArea">
+  <div id="player">&#x1F403;</div> <!-- 牛の絵文字をプレイヤーとして使用 -->
+  <div class="enemy">&#x1F47D;</div> <!-- エイリアンの絵文字を敵として使用 -->
+  <div class="enemy">&#x1F47D;</div>
+  <div class="enemy">&#x1F47D;</div>
 </div>
-
-<script>
-// ゲームの状態を表す変数
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const rows = 20;
-const cols = 10;
-const blockSize = 30;
-const board = Array.from({ length: rows }, () => Array(cols).fill(0));
-let currentPiece;
-
-// ピースの形状と色の定義
-const shapes = [
-  // I形
-  [
-    [1, 1, 1, 1],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0],
-    [0, 0, 0, 0]
-  ],
-  // 他のテトリミノの形状も同様に定義
-];
-const colors = ['cyan', 'blue', 'orange', 'yellow', 'green', 'purple', 'red'];
-
-// ピースの生成
-function createPiece() {
-  const typeId = Math.floor(Math.random() * shapes.length);
-  return {
-    x: typeId === 0 ? 3 : 4, // I形の場合は位置を調整
-    y: -4, // 画面上部からスタート
-    shape: shapes[typeId],
-    color: colors[typeId]
-  };
-}
-
-// ピースの描画
-function drawPiece() {
-  ctx.fillStyle = currentPiece.color;
-  currentPiece.shape.forEach((row, y) => {
-    row.forEach((value, x) => {
-      if (value) {
-        ctx.fillRect((currentPiece.x + x) * blockSize, (currentPiece.y + y) * blockSize, blockSize, blockSize);
-      }
-    });
-  });
-}
-
-// ボードの描画
-function drawBoard() {
-  board.forEach((row, y) => {
-    row.forEach((value, x) => {
-      ctx.fillStyle = value === 0 ? 'white' : colors[value - 1];
-      ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
-    });
-  });
-}
-
-// ゲームの更新
-function updateGame() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  drawBoard();
-  drawPiece();
-  currentPiece.y += 1; // ピースを1つ下に移動
-
-  // ピースが底に達したか、他のピースに衝突した場合の処理
-  if (currentPiece.y + currentPiece.shape.length === rows || collisionDetected()) {
-    currentPiece.y -= 1; // ピースを1つ上に戻す
-    fixPiece(); // ピースをボードに固定する
-    currentPiece = createPiece(); // 新しいピースを生成する
-  }
-
-  requestAnimationFrame(updateGame); // 次のフレームでゲームを更新する
-}
-
-// 衝突検出
-function collisionDetected() {
-  for (let y = 0; y < currentPiece.shape.length; y++) {
-    for (let x = 0; x < currentPiece.shape[y].length; x++) {
-      if (currentPiece.shape[y][x] &&
-          (board[y + currentPiece.y] &&
-          board[y + currentPiece.y][x + currentPiece.x]) !== 0) {
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-// ピースをボードに固定する
-function fixPiece() {
-  for (let y = 0; y < currentPiece.shape.length; y++) {
-    for (let x = 0; x < currentPiece.shape[y].length; x++) {
-      if (currentPiece.shape[y][x]) {
-        board[y + currentPiece.y][x + currentPiece.x] = shapes.indexOf(currentPiece.shape) + 1;
-      }
-    }
-  }
-}
-
-// ゲームの初期化
-function init() {
-  currentPiece = createPiece();
-  updateGame();
-}
-
-init(); // ゲームを開始する
-</script>
+<div id="controls">
+  <button id="left">&#x2B05;</button>
+  <button id="right">&#x27A1;</button>
+  <button id="up">&#x2B06;</button>
+  <button id="down">&#x2B07;</button>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
