@@ -23,7 +23,64 @@
 </div>
 
 <script>
-// JavaScriptのコードをここに挿入
-</script>
-</body>
-</html>
+// ゲームの状態を表す変数
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const rows = 20;
+const cols = 10;
+const blockSize = 30;
+const board = Array.from({ length: rows }, () => Array(cols).fill(0));
+let currentPiece;
+
+// ピースの形状と色の定義
+const shapes = [
+  // I形
+  [
+    [1, 1, 1, 1],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0],
+    [0, 0, 0, 0]
+  ],
+  // 他のテトリミノの形状も同様に定義
+];
+const colors = ['cyan', 'blue', 'orange', 'yellow', 'green', 'purple', 'red'];
+
+// ピースの生成
+function createPiece() {
+  const typeId = Math.floor(Math.random() * shapes.length);
+  return {
+    x: typeId === 0 ? 3 : 4, // I形の場合は位置を調整
+    y: -4, // 画面上部からスタート
+    shape: shapes[typeId],
+    color: colors[typeId]
+  };
+}
+
+// ピースの描画
+function drawPiece() {
+  ctx.fillStyle = currentPiece.color;
+  currentPiece.shape.forEach((row, y) => {
+    row.forEach((value, x) => {
+      if (value) {
+        ctx.fillRect((currentPiece.x + x) * blockSize, (currentPiece.y + y) * blockSize, blockSize, blockSize);
+      }
+    });
+  });
+}
+
+// ボードの描画
+function drawBoard() {
+  board.forEach((row, y) => {
+    row.forEach((value, x) => {
+      ctx.fillStyle = value === 0 ? 'white' : colors[value - 1];
+      ctx.fillRect(x * blockSize, y * blockSize, blockSize, blockSize);
+    });
+  });
+}
+
+// ゲームの更新
+function updateGame() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawBoard();
+  drawPiece();
+  currentPiece.y += 1; // ピースを1つ下に移
